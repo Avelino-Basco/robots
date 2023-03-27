@@ -23,6 +23,15 @@ class SensorsSubscriber(Node):
     self.create_subscription(LaserScan, 'scan', self.scan_callback, qos_profile=qos_profile_sensor_data)
     self.imu_count = 0
 
+  def set_params(self):
+    self.declare_parameter('hz', 1)
+  
+  def get_params(self):
+    self.hz = self.get_parameter('hz').get_parameter_value().integer_value
+    
+  def timer_callback(self):
+    self.get_logger().info(str(datetime.datetime.now()))
+    
   def imu_callback(self, msg):
     self.get_logger().info('IMU: (qo_x, qo_y, qo_z): (%f,%f,%f) |' % (msg.orientation_covariance.x,msg.orientation_covariance.y,msg.orientation_covariance.z))
     self.get_logger().info(' (av_x, av_y, av_z): (%f,%f,%f) |' % (msg.angular_velocity_covariance.x,msg.angular_velocity_covariance.y,msg.angular_velocity_covariance.z))
@@ -33,3 +42,13 @@ class SensorsSubscriber(Node):
     
   def battery_callback(self, msg):
     self.get_logger().info('BATTERY: %s | Voltage: %f | Temp: %f | Current: %f' %(msg.present, msg.voltage, msg.temperature, msg.current))
+
+def main(args=None):
+  rclpy.init(args=args)
+  sensor_subscriber = SensorsSubscriber()
+  rclpy.spin(sensor_subscriber)
+  sensor_subscriber.destroy_node()
+  rclpy.shutdown()
+
+if __name__ == '__main__':
+  main()
