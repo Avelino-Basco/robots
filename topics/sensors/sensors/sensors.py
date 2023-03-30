@@ -28,7 +28,10 @@ class SensorsSubscriber(Node):
   
   def get_params(self):
     self.hz = self.get_parameter('hz').get_parameter_value().integer_value
-    
+    #self.imu_show = self.get_parameter('imu_show').get_parameter_value().integer_value
+    #self.laserscan_show = self.get_parameter('laserscan_show').get_parameter_value().integer_value
+    #self.battery_show = self.get_parameter('battery_show').get_parameter_value().integer_value
+
   def timer_callback(self):
     self.get_logger().info(str(datetime.datetime.now()))
     
