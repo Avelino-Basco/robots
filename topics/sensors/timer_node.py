@@ -5,7 +5,7 @@ from rclpy.node import node
 
 class TimerNode(Node):
     def __init__(self:
-        super().__init__('timer_node'))
+        super().__init__('timer_node')
 
         self.set_params()
         self.get_params()
